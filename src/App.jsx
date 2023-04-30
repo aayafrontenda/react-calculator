@@ -72,7 +72,7 @@ function div(a, b) {
 }
 
 function reducer(state, { type, payload }) {
-  if (state.currentOperand === '{error}')
+  if (state.currentOperand === '{error}' || (state.previousOperand && state.previousOperand.toString().includes('error')))
     return {};
 
   switch (type) {
@@ -103,6 +103,13 @@ function reducer(state, { type, payload }) {
     case ACTIONS.DELETE_DIGIT:
       if (state.currentOperand === undefined)
         return state;
+
+      if (state.currentOperand.toString().length == 1) {
+        return {
+          ...state,
+          currentOperand: '0'
+        }
+      }
 
       return {
         ...state,
@@ -149,6 +156,9 @@ function reducer(state, { type, payload }) {
 
     case ACTIONS.EVALUATE: 
       if (state.isEvaluated)
+        return state;
+
+      if (!state.currentOperand || !state.previousOperand || !state.operation)
         return state;
 
       return {
