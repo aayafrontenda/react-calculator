@@ -135,7 +135,7 @@ function reducer(state, { type, payload }) {
           operation: payload.operation
         }
       }
-
+      
       if (state.previousOperand == null) {
         return {
           ...state,
@@ -219,26 +219,30 @@ function App() {
       <div className='calculator-grid'>
         <div className='output'>
           <div className='previous-operand'>{previousOperand}{operation}</div>
-          <div className='current-operand'>{(currentOperand !== '{error}') ? formatOperand(currentOperand) : currentOperand}</div>
+          <div id='display' className='current-operand'>{(currentOperand !== '{error}' && (currentOperand && !currentOperand.toString().includes('-'))) ? formatOperand(currentOperand) : currentOperand}</div>
         </div>
-        <button onClick={() => dispatch({ type: ACTIONS.CLEAR })} className='span-two'>AC</button>
-        <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>DEL</button>
-        <OperationButton dispatch={dispatch} operation={'÷'}/>
-        <DigitButton dispatch={dispatch} digit='1' />
-        <DigitButton dispatch={dispatch} digit='2' />
-        <DigitButton dispatch={dispatch} digit='3' />
-        <OperationButton dispatch={dispatch} operation={'*'}/>
-        <DigitButton dispatch={dispatch} digit='4' />
-        <DigitButton dispatch={dispatch} digit='5' />
-        <DigitButton dispatch={dispatch} digit='6' />
-        <OperationButton dispatch={dispatch} operation={'+'}/>
-        <DigitButton dispatch={dispatch} digit='7' />
-        <DigitButton dispatch={dispatch} digit='8' />
-        <DigitButton dispatch={dispatch} digit='9' />
-        <OperationButton dispatch={dispatch} operation={'-'}/>
-        <DigitButton dispatch={dispatch} digit={'.'} />
-        <DigitButton dispatch={dispatch} digit='0' />
-        <button onClick={() => dispatch({ type: ACTIONS.EVALUATE })} className='span-two'>=</button>
+        <button id='clear' onClick={() => dispatch({ type: ACTIONS.CLEAR })} className='span-two'>AC</button>
+        <button id='delete' onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>DEL</button>
+        <OperationButton id='divide' dispatch={dispatch} operation={'÷'}/>
+        <DigitButton id='one' dispatch={dispatch} digit='1' />
+        <DigitButton id='two' dispatch={dispatch} digit='2' />
+        <DigitButton id='three' dispatch={dispatch} digit='3' />
+        <OperationButton id='multiply' dispatch={dispatch} operation={'*'}/>
+        <DigitButton id='four' dispatch={dispatch} digit='4' />
+        <DigitButton id='five' dispatch={dispatch} digit='5' />
+        <DigitButton id='six' dispatch={dispatch} digit='6' />
+        <OperationButton id='add' dispatch={dispatch} operation={'+'}/>
+        <DigitButton id='seven' dispatch={dispatch} digit='7' />
+        <DigitButton id='eight' dispatch={dispatch} digit='8' />
+        <DigitButton id='nine' dispatch={dispatch} digit='9' />
+        {
+          (operation != '*' && operation != '÷') 
+          ? <OperationButton id='subtract' dispatch={dispatch} operation={'-'}/>
+          : <DigitButton id='substract' dispatch={dispatch} digit='-' />
+        }
+        <DigitButton id='decimal' dispatch={dispatch} digit={'.'} />
+        <DigitButton id='zero' dispatch={dispatch} digit='0' />
+        <button id='equals' onClick={() => dispatch({ type: ACTIONS.EVALUATE })} className='span-two'>=</button>
       </div>
     </div>
   )
